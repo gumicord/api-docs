@@ -37,6 +37,7 @@ ui.patch("chat.message.header.author", (node) =>
 
 ## 目次
 
+- [API リファレンス](ja/plugins/reference.md) — 関数・インターフェース・型・イベントの署名一覧
 - [実行モデルと寿命](ja/plugins/lifecycle.md) — 隔離・P1〜P7・予算・失敗の数え方
 - [manifest と能力・承認](ja/plugins/manifest.md) — `manifest.json`・能力・承認と状態・設定画面
 - [`ui`](ja/plugins/ui.md) — `patch`・`exists`・`wrap`・`after`/`before`・`stack`・`node`・部品生成

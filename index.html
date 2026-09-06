@@ -4,9 +4,21 @@
   <meta charset="UTF-8">
   <title>Gumicord API docs</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" id="theme-light">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/dark.css" id="theme-dark" disabled>
+  <style>
+    .theme-switch { position: fixed; top: 8px; right: 12px; z-index: 9999; display: flex; gap: 4px; }
+    .theme-switch button { font-size: 12px; padding: 2px 8px; border: 1px solid #888; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; opacity: 0.65; }
+    .theme-switch button[aria-pressed="true"] { opacity: 1; font-weight: bold; border-width: 2px; padding: 1px 7px; }
+  </style>
 </head>
 <body>
+  <div class="theme-switch" role="group" aria-label="Color theme">
+    <button type="button" data-mode="light" aria-pressed="false">Light</button>
+    <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+    <button type="button" data-mode="auto" aria-pressed="true">Auto</button>
+  </div>
   <div id="app"></div>
   <script>
     window.$docsify = {
@@ -19,5 +31,35 @@
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+  <script>
+    (function () {
+      var KEY = 'gumicord-docs-theme';
+      var light = document.getElementById('theme-light');
+      var dark = document.getElementById('theme-dark');
+      var buttons = Array.prototype.slice.call(document.querySelectorAll('.theme-switch button'));
+      var media = window.matchMedia('(prefers-color-scheme: dark)');
+      function current() {
+        try { return localStorage.getItem(KEY) || 'auto'; }
+        catch (e) { return 'auto'; }
+      }
+      function apply(mode) {
+        var darkOn = mode === 'dark' || (mode === 'auto' && media.matches);
+        light.disabled = darkOn;
+        dark.disabled = !darkOn;
+        buttons.forEach(function (b) {
+          b.setAttribute('aria-pressed', b.getAttribute('data-mode') === mode ? 'true' : 'false');
+        });
+      }
+      buttons.forEach(function (b) {
+        b.addEventListener('click', function () {
+          var mode = b.getAttribute('data-mode');
+          try { localStorage.setItem(KEY, mode); } catch (e) {}
+          apply(mode);
+        });
+      });
+      media.addEventListener('change', function () { if (current() === 'auto') apply('auto'); });
+      apply(current());
+    })();
+  </script>
 </body>
 </html>

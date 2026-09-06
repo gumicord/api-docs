@@ -28,6 +28,7 @@ ui.patch("chat.message.header.author", (node) =>
 
 ## Contents
 
+- [API reference](en/plugins/reference.md) — signatures of functions, interfaces, types, events
 - [Execution model and lifetime](en/plugins/lifecycle.md) — isolation, P1–P7, budgets, failure counting
 - [Manifest, capabilities, approval](en/plugins/manifest.md) — `manifest.json`, capabilities, approval and states, settings
 - [`ui`](en/plugins/ui.md) — `patch`, `exists`, `wrap`, `after`/`before`, `stack`, `node`, part builders
