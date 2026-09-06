@@ -7,6 +7,8 @@
   <meta name="color-scheme" content="light dark">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" id="theme-light">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/dark.css" id="theme-dark" disabled>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prismjs@1/themes/prism.min.css" id="prism-light">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prismjs@1/themes/prism-tomorrow.min.css" id="prism-dark" disabled>
   <style>
     .top-bar { position: fixed; top: 8px; right: 12px; z-index: 9999; display: flex; gap: 4px; align-items: center; }
     .top-bar select { font-size: 12px; padding: 2px 4px; border: 1px solid #888; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; opacity: 0.85; }
@@ -40,11 +42,20 @@
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+  <script>
+    if (window.Prism && Prism.languages.json && !Prism.languages.jsonc) {
+      Prism.languages.jsonc = Prism.languages.json;
+    }
+  </script>
   <script>
     (function () {
       var KEY = 'gumicord-docs-theme';
       var light = document.getElementById('theme-light');
       var dark = document.getElementById('theme-dark');
+      var prismLight = document.getElementById('prism-light');
+      var prismDark = document.getElementById('prism-dark');
       var buttons = Array.prototype.slice.call(document.querySelectorAll('.theme-switch button'));
       var media = window.matchMedia('(prefers-color-scheme: dark)');
       function current() {
@@ -55,6 +66,8 @@
         var darkOn = mode === 'dark' || (mode === 'auto' && media.matches);
         light.disabled = darkOn;
         dark.disabled = !darkOn;
+        prismLight.disabled = darkOn;
+        prismDark.disabled = !darkOn;
         buttons.forEach(function (b) {
           b.setAttribute('aria-pressed', b.getAttribute('data-mode') === mode ? 'true' : 'false');
         });
