@@ -8,22 +8,31 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" id="theme-light">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/dark.css" id="theme-dark" disabled>
   <style>
-    .theme-switch { position: fixed; top: 8px; right: 12px; z-index: 9999; display: flex; gap: 4px; }
+    .top-bar { position: fixed; top: 8px; right: 12px; z-index: 9999; display: flex; gap: 4px; align-items: center; }
+    .top-bar select { font-size: 12px; padding: 2px 4px; border: 1px solid #888; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; opacity: 0.85; }
+    .top-bar select option { color: initial; }
+    .theme-switch { display: flex; gap: 4px; }
     .theme-switch button { font-size: 12px; padding: 2px 8px; border: 1px solid #888; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; opacity: 0.65; }
     .theme-switch button[aria-pressed="true"] { opacity: 1; font-weight: bold; border-width: 2px; padding: 1px 7px; }
   </style>
 </head>
 <body>
-  <div class="theme-switch" role="group" aria-label="Color theme">
-    <button type="button" data-mode="light" aria-pressed="false">Light</button>
-    <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
-    <button type="button" data-mode="auto" aria-pressed="true">Auto</button>
+  <div class="top-bar">
+    <select id="lang-select" aria-label="Language">
+      <option value="ja">日本語</option>
+      <option value="en">English</option>
+    </select>
+    <div class="theme-switch" role="group" aria-label="Color theme">
+      <button type="button" data-mode="light" aria-pressed="false">Light</button>
+      <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+      <button type="button" data-mode="auto" aria-pressed="true">Auto</button>
+    </div>
   </div>
   <div id="app"></div>
   <script>
     window.$docsify = {
       name: 'Gumicord API',
-      loadSidebar: '_sidebar.md',
+      loadSidebar: true,
       subMaxLevel: 2,
       auto2top: true,
       search: 'auto',
@@ -59,6 +68,28 @@
       });
       media.addEventListener('change', function () { if (current() === 'auto') apply('auto'); });
       apply(current());
+
+      var langSel = document.getElementById('lang-select');
+      function langFromHash() {
+        var m = location.hash.match(/^#\/(ja|en)(\/|$)/);
+        if (m) return m[1];
+        try {
+          return (navigator.language || 'ja').toLowerCase().indexOf('ja') === 0 ? 'ja' : 'en';
+        } catch (e) { return 'ja'; }
+      }
+      function syncLang() { langSel.value = langFromHash(); }
+      langSel.addEventListener('change', function () {
+        var lang = langSel.value;
+        var h = location.hash.replace(/^#/, '');
+        var swapped = h.replace(/^\/(ja|en)(\/|$)/, '/' + lang + '$2');
+        if (swapped === h) {
+          location.hash = '#/' + lang + '/README';
+        } else {
+          location.hash = '#' + swapped;
+        }
+      });
+      window.addEventListener('hashchange', syncLang);
+      syncLang();
     })();
   </script>
 </body>

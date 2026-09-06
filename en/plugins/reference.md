@@ -6,10 +6,6 @@ A signature-browsing page. For flows see the concept pages:
 [`ui`](en/plugins/ui.md),
 [`ctx.data` and node shape](en/plugins/data.md).
 
-- There are no classes. `ui`, `log`, `storage` are namespaces; never `new`
-  them.
-- There is no `enum` keyword. `NodeId`, `NodeState` and friends are string
-  literal unions, used as enumerations.
 - There is no event subscription API. See [Events](#events).
 
 ## Contents

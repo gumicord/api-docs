@@ -6,9 +6,6 @@
 [`ui`](ja/plugins/ui.md)・
 [`ctx.data` とノードの形](ja/plugins/data.md)。
 
-- クラスは無い。`ui`・`log`・`storage` は名前空間であり、`new` しない。
-- `enum` キーワードは無い。`NodeId`・`NodeState` 等は文字列リテラルの
-  合併型であり、列挙のように使う。
 - イベント購読 API は無い。詳しくは [イベント](#イベント) を見ること。
 
 ## 目次
