@@ -4,7 +4,7 @@
 追加のみ行われ、削除・改名は行われない。合計 121 個 (中核 77 / 生成可 44)。
 
 - テーマは安定 ID を持つノードにのみ介入できる
-- `data` 列があるノードは `ctx.data` の型 (`ja/plugins/data.md`) と対応する
+- `data` 列があるノードは `ctx.data` の型 ([プラグイン API リファレンス](ja/plugins/reference.md)) と対応する
 - 使い方は [テーマ API](ja/theme.md)・[ルール](ja/theme/rules.md) を見ること
 
 ## `app.*`

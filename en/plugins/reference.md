@@ -3,19 +3,40 @@
 A signature-browsing page. For flows see the concept pages:
 [Execution model and lifetime](en/plugins/lifecycle.md),
 [Manifest, capabilities, approval](en/plugins/manifest.md),
-[`ui`](en/plugins/ui.md),
-[`ctx.data` and node shape](en/plugins/data.md).
+[Building, distribution, don'ts](en/plugins/build.md).
+To build the first one, start at [Setup and authoring](en/plugins/setup.md).
 
 - There is no event subscription API. See [Events](#events).
 
 ## Contents
 
+- [`ctx`](#ctx): the context a patch receives
 - [`ui`](#ui): `patch`, `exists`, `wrap`, `after`, `before`, `settings`, `stack`, `node`, `text`, `badge`, `button`, `icon`
 - [`log`](#log): `info`, `warn`, `error`
 - [`storage`](#storage): `get`, `set`, `remove`, `getJSON`, `setJSON`
 - [Interfaces](#interfaces): `UINode`, `NewUINode`, `PatchContext`, `PatchFn`, 8 data types
 - [Type aliases and enum-like types](#type-aliases-and-enum-like-types): `NodeId`, `PluginNodeId`, `CreatableNodeId`, `CoreCreatableNodeId`, `NodeState`, `DataByNode`
 - [Events](#events): no subscription API
+
+## `ctx`
+
+The context a patch receives. Passed as `{ data }`, taken out per patch
+for that node alone.
+
+- `ctx.data` holds per-node domain facts, typed from the ID
+  (`ctx.data.author.bot`); `undefined` where the node carries none.
+- Read-only; no raw payloads ever surface. Additions are non-breaking;
+  removals and renames are breaking (part of the ABI).
+- Which ID carries which type lives in the `data` column of the
+  [stable ID catalog](en/theme/ids.md). The type list sits under
+  [Interfaces](#interfaces).
+
+```ts
+ui.patch("chat.message.header.author", (node, ctx) => {
+  if (!ctx.data.author.bot) return node;  // branch on data
+  return ui.after(node, ui.badge({ text: "BOT" }));
+});
+```
 
 ## `ui`
 

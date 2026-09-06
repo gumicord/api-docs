@@ -37,10 +37,9 @@ ui.patch("chat.message.header.author", (node) =>
 
 ## 目次
 
-- [API リファレンス](ja/plugins/reference.md) — 関数・インターフェース・型・イベントの署名一覧
+- [API リファレンス](ja/plugins/reference.md) — 関数・`ctx`・インターフェース・型・イベントの署名一覧
+- [環境構築と書き方](ja/plugins/setup.md) — 道具の用意・初回の手順・サンプル
 - [実行モデルと寿命](ja/plugins/lifecycle.md) — 隔離・P1〜P7・予算・失敗の数え方
 - [manifest と能力・承認](ja/plugins/manifest.md) — `manifest.json`・能力・承認と状態・設定画面
-- [`ui`](ja/plugins/ui.md) — `patch`・`exists`・`wrap`・`after`/`before`・`stack`・`node`・部品生成
-- [`ctx.data` とノードの形](ja/plugins/data.md) — 型表・`UINode`・ホスト境界
 - [ビルドと配布・してはいけないこと](ja/plugins/build.md) — 開発手順・禁止事項
 - [安定 ID カタログ](ja/theme/ids.md) — ID と役目の一覧 (テーマと共有)

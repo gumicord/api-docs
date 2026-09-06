@@ -3,19 +3,40 @@
 署名だけを眺めるための頁。使い方の流れは概念頁を見ること:
 [実行モデルと寿命](ja/plugins/lifecycle.md)・
 [manifest と能力・承認](ja/plugins/manifest.md)・
-[`ui`](ja/plugins/ui.md)・
-[`ctx.data` とノードの形](ja/plugins/data.md)。
+[ビルドと配布・してはいけないこと](ja/plugins/build.md)。
+初めて作るときは [環境構築と書き方](ja/plugins/setup.md) から入ること。
 
 - イベント購読 API は無い。詳しくは [イベント](#イベント) を見ること。
 
 ## 目次
 
+- [`ctx`](#ctx): パッチが受け取る文脈
 - [`ui`](#ui): `patch`・`exists`・`wrap`・`after`・`before`・`settings`・`stack`・`node`・`text`・`badge`・`button`・`icon`
 - [`log`](#log): `info`・`warn`・`error`
 - [`storage`](#storage): `get`・`set`・`remove`・`getJSON`・`setJSON`
 - [インターフェース](#インターフェース): `UINode`・`NewUINode`・`PatchContext`・`PatchFn`・データ8種
 - [型エイリアスと列挙的型](#型エイリアスと列挙的型): `NodeId`・`PluginNodeId`・`CreatableNodeId`・`CoreCreatableNodeId`・`NodeState`・`DataByNode`
 - [イベント](#イベント): 購読 API なし
+
+## `ctx`
+
+パッチが受け取る文脈。`{ data }` の形で渡され、パッチ関数ごとに
+そのノードぶんだけが取り出される。
+
+- `ctx.data` はノード毎のドメイン事実で、ID から型が付く
+  (`ctx.data.author.bot` 等)。該当なしは `undefined`。
+- 読取専用で、生ペイロードは出ない。追加は非破壊、削除改名は破壊的
+  (ABI の一部)。
+- どの ID がどの型を持つかは [安定 ID カタログ](ja/theme/ids.md) の
+  `data` 列を見ること。型の一覧は [インターフェース](#インターフェース)
+  にある。
+
+```ts
+ui.patch("chat.message.header.author", (node, ctx) => {
+  if (!ctx.data.author.bot) return node;  // data を見て分岐
+  return ui.after(node, ui.badge({ text: "BOT" }));
+});
+```
 
 ## `ui`
 

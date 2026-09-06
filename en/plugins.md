@@ -28,10 +28,9 @@ ui.patch("chat.message.header.author", (node) =>
 
 ## Contents
 
-- [API reference](en/plugins/reference.md) — signatures of functions, interfaces, types, events
+- [API reference](en/plugins/reference.md) — signatures of functions, `ctx`, interfaces, types, events
+- [Setup and authoring](en/plugins/setup.md) — tooling, first steps, samples
 - [Execution model and lifetime](en/plugins/lifecycle.md) — isolation, P1–P7, budgets, failure counting
 - [Manifest, capabilities, approval](en/plugins/manifest.md) — `manifest.json`, capabilities, approval and states, settings
-- [`ui`](en/plugins/ui.md) — `patch`, `exists`, `wrap`, `after`/`before`, `stack`, `node`, part builders
-- [`ctx.data` and node shape](en/plugins/data.md) — type tables, `UINode`, host boundary
 - [Building, distribution, don'ts](en/plugins/build.md) — workflow, prohibitions
 - [Stable ID catalog](en/theme/ids.md) — IDs with roles (shared with themes)

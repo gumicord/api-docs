@@ -40,6 +40,7 @@ Top level holds only `$schema`, `manifest`, `tokens`, `rules`.
 
 ## Contents
 
+- [Setup and authoring](en/theme/setup.md) — tooling, first steps, samples
 - [Stable ID catalog](en/theme/ids.md) — IDs writable in `select`, with roles
 - [Manifest and tokens](en/theme/manifest-tokens.md) — identity, value table, `$data.tint`
 - [Rules and conditions](en/theme/rules.md) — `select`, `when`, cascade, selection

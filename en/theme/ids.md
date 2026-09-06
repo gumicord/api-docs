@@ -5,7 +5,7 @@ selectors. Only additions happen; removals and renames never happen.
 121 total (77 core / 44 pluggable).
 
 - Themes intervene only in nodes with stable IDs
-- Nodes with a `data` column correspond to `ctx.data` types (`en/plugins/data.md`)
+- Nodes with a `data` column correspond to `ctx.data` types ([Plugin API reference](en/plugins/reference.md))
 - For usage see [Theme API](en/theme.md) and [Rules](en/theme/rules.md)
 
 ## `app.*`

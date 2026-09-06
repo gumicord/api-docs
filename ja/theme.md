@@ -53,6 +53,7 @@
 
 ## 目次
 
+- [環境構築と書き方](ja/theme/setup.md) — 道具の用意・初回の手順・サンプル
 - [安定 ID カタログ](ja/theme/ids.md) — `select` に書ける ID と役目の一覧
 - [manifest とトークン](ja/theme/manifest-tokens.md) — 身元・値の表・`$data.tint`
 - [ルールと条件](ja/theme/rules.md) — `select`・`when`・カスケード・選択
