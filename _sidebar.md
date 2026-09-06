@@ -1,0 +1,9 @@
+- [Top](README.md)
+- English
+  - [Guide](en/README.md)
+  - [Theme API](en/theme.md)
+  - [Plugin API](en/plugins.md)
+- 日本語
+  - [案内](ja/README.md)
+  - [テーマ API](ja/theme.md)
+  - [プラグイン API](ja/plugins.md)
