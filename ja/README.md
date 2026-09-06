@@ -2,5 +2,5 @@
 
 テーマとプラグインの作者向けリファレンス。
 
-- [テーマ API](theme.md)
-- [プラグイン API](plugins.md)
+- [テーマ API](ja/theme.md)
+- [プラグイン API](ja/plugins.md)
