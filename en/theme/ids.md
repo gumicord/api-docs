@@ -1,0 +1,170 @@
+# Stable ID catalog
+
+IDs writable in `select`. Exact match only. No wildcards or descendant
+selectors. Only additions happen; removals and renames never happen.
+121 total (77 core / 44 pluggable).
+
+- Themes intervene only in nodes with stable IDs
+- Nodes with a `data` column correspond to `ctx.data` types (`en/plugins/data.md`)
+- For usage see [Theme API](en/theme.md) and [Rules](en/theme/rules.md)
+
+## `app.*`
+
+| ID | `data` | Role |
+|---|---|---|
+| `app.root` | — | Tree root |
+| `app.window` | — | One window |
+| `app.screen` | — | Container wrapping the visible screen |
+| `app.screen.loading` | — | Starting up |
+| `app.screen.login` | — | Login screen |
+| `app.screen.login.title` | — | Login screen heading |
+| `app.screen.login.hint` | — | Login screen description and status line |
+| `app.screen.login.field` | — | Login form input field |
+| `app.screen.login.label` | — | Login form field name |
+| `app.screen.login.error` | — | Error line on the login form |
+| `app.screen.login.card` | — | Card container of the login form |
+| `app.screen.login.forgot` | — | Forgotten-password link |
+| `app.screen.login.divider` | — | Or-divider |
+| `app.screen.login.qr_button` | — | QR-code login button |
+| `app.screen.login.register` | — | Account creation link |
+| `app.screen.main` | — | Main screen |
+
+## `chrome.*`
+
+| ID | `data` | Role |
+|---|---|---|
+| `chrome.titlebar` | — | Custom title bar |
+| `chrome.titlebar.title` | — | Title text |
+| `chrome.titlebar.controls` | — | Window control button group |
+| `chrome.titlebar.control` | — | One button (key tells minimize/maximize/close apart) |
+
+## `nav.*`
+
+| ID | `data` | Role |
+|---|---|---|
+| `nav.guild_list` | — | Guild list |
+| `nav.guild_list.home` | — | Entry to DMs |
+| `nav.guild_list.item` | `GuildData` | One guild |
+| `nav.guild_list.item.icon` | `GuildData` | Guild icon |
+| `nav.guild_list.item.pill` | `GuildData` | White mark at the left edge. Size changes with selection, unread, hover |
+| `nav.guild_list.item.badge` | `GuildData` | Unread and mention counts |
+| `nav.guild_list.folder` | — | Server folder. Opens and closes on press |
+| `nav.guild_list.folder.icon` | — | Mark of an open folder |
+| `nav.channel_list` | — | Channel list |
+| `nav.channel_list.header` | — | Heading such as the guild name |
+| `nav.channel_list.category` | `CategoryData` | Category |
+| `nav.channel_list.item` | `ChannelData` | One channel |
+| `nav.channel_list.item.icon` | `ChannelData` | Type icon |
+| `nav.channel_list.item.name` | `ChannelData` | Channel name |
+| `nav.channel_list.item.badge` | `ChannelData` | Unread and mention counts |
+| `nav.dm_list` | — | DM list |
+| `nav.dm_list.item` | `DmData` | One DM |
+| `nav.sidebar` | — | Whole left side. Groups lists and self |
+| `nav.sidebar.lists` | — | Server list and channel list |
+| `nav.user_panel` | — | Logged-in self. Sits below the lists |
+| `nav.user_panel.avatar` | — | Own avatar |
+| `nav.user_panel.presence` | — | Status dot (key tells online/idle/dnd/invisible apart) |
+| `nav.user_panel.name` | — | Own display name |
+| `nav.user_panel.status` | — | Status words |
+| `nav.member_list` | — | Member list |
+| `nav.member_list.sheet` | — | List inside a sheet. Same except for filling the width |
+| `nav.member_list.group` | — | Role and online headings |
+| `nav.member_list.item` | `MemberData` | One member |
+| `nav.member_list.item.avatar` | `MemberData` | That person's avatar |
+| `nav.member_list.item.presence` | `MemberData` | Status dot (key tells online/idle/dnd apart) |
+| `nav.member_list.item.name` | `MemberData` | Display name on that server |
+
+## `chat.*`
+
+| ID | `data` | Role |
+|---|---|---|
+| `chat.view` | — | Whole chat area |
+| `chat.header` | `ChannelData` | Channel header |
+| `chat.header.title` | `ChannelData` | Channel name |
+| `chat.header.topic` | `ChannelData` | Topic |
+| `chat.message_list` | — | Message list |
+| `chat.message_list.day_divider` | — | Day divider |
+| `chat.message` | `MessageData` | One message |
+| `chat.message.avatar` | `MessageData` | Sender icon |
+| `chat.message.header` | `MessageData` | Sender row |
+| `chat.message.header.author` | `MessageData` | Sender name |
+| `chat.message.header.badges` | `MessageData` | BOT tags and friends |
+| `chat.message.header.timestamp` | `MessageData` | Time |
+| `chat.message.reply_ref` | `MessageData` | Reply reference. Small icon plus one line. Pressing jumps to the source |
+| `chat.message.reply_ref.avatar` | — | Small icon of the reference |
+| `chat.message.content` | `MessageData` | Body |
+| `chat.message.content.quote` | — | Quote block row. Only matches the content height |
+| `chat.message.attachments` | `MessageData` | Attachment list |
+| `chat.message.attachment` | `AttachmentData` | One attachment |
+| `chat.message.embeds` | `MessageData` | Embed list |
+| `chat.message.embed` | `EmbedData` | One embed |
+| `chat.message.actions` | `MessageData` | Hover action group |
+| `chat.typing_indicator` | — | Typing indicator |
+| `chat.input` | — | Whole input area |
+| `chat.input.field` | — | Text input itself |
+| `chat.input.toolbar` | — | Upper part of the input area |
+| `chat.input.actions` | — | Button group for send and attachments |
+
+## `overlay.*`
+
+| ID | `data` | Role |
+|---|---|---|
+| `overlay.layer` | — | Layer carrying floating things. Exists only while open |
+| `overlay.scrim` | — | Cover darkening the back |
+| `overlay.popover` | — | Box floating at an anchor point |
+| `overlay.sheet` | — | Sheet coming from below (mobile) |
+| `overlay.sheet.handle` | — | Grab strip at the top of the sheet |
+| `overlay.drawer` | — | Shelf coming from the side. List holder on narrow screens |
+| `overlay.menu` | — | Operation list |
+| `overlay.menu.item` | — | One operation |
+| `overlay.menu.item.icon` | — | Operation picture |
+| `overlay.menu.item.label` | — | Operation name |
+| `overlay.menu.separator` | — | Operation divider |
+| `overlay.modal` | — | Window asking before proceeding |
+| `overlay.modal.title` | — | Window heading. What is about to happen |
+| `overlay.modal.body` | — | Description of what happens |
+| `overlay.modal.preview` | — | The target itself |
+| `overlay.modal.actions` | — | Window button group |
+| `overlay.modal.action` | — | One window button (key holds the number) |
+| `overlay.modal.action.label` | — | Button text (slot holds cancel/confirm/danger) |
+| `overlay.tooltip` | — | Short description of the pointed thing. Vanishes, never presses |
+| `overlay.toast` | — | Notice appearing below and vanishing in seconds. Nothing to press |
+
+## `settings.*`
+
+| ID | `data` | Role |
+|---|---|---|
+| `settings.screen` | — | Settings screen |
+| `settings.nav` | — | Settings category list |
+| `settings.page` | — | Contents of the open category |
+
+## `primitive.*`
+
+| ID | `data` | Role |
+|---|---|---|
+| `primitive.text` | — | String |
+| `primitive.image` | — | Image |
+| `primitive.icon` | — | Icon |
+| `primitive.qr` | — | QR code |
+| `primitive.avatar` | — | Round person picture |
+| `primitive.badge` | — | Small label |
+| `primitive.button` | — | Pressable thing |
+| `primitive.divider` | — | Divider line |
+| `primitive.spinner` | — | Loading indicator |
+| `primitive.mention` | — | Mention |
+| `primitive.emoji` | — | Emoji |
+| `primitive.code_block` | — | Code block |
+| `primitive.spoiler` | — | Spoiler |
+| `primitive.link` | — | Link |
+
+## `layout.*`
+
+| ID | `data` | Role |
+|---|---|---|
+| `layout.row` | — | Horizontal row |
+| `layout.column` | — | Vertical column |
+| `layout.stack` | — | Stack |
+| `layout.scroll` | — | Scroll area |
+| `layout.spacer` | — | Gap |
+| `layout.scrollbar` | — | Scroll position display and control |
+| `layout.scrollbar.thumb` | — | Scrollbar thumb |
