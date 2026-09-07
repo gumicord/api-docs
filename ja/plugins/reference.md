@@ -38,6 +38,11 @@ ui.patch("chat.message.header.author", (node, ctx) => {
 });
 ```
 
+<!-- BEGIN GENERATED: api -->
+
+> ⚠️ **この節は `sdk/src` から生成されている。**
+> 直接編集しても上書きされる。直すのは SDK の TSDoc か `sdk/apidocs/ja.json` のほうである。
+
 ## `ui`
 
 ### `ui.patch`
@@ -46,12 +51,7 @@ ui.patch("chat.message.header.author", (node, ctx) => {
 patch<Id extends NodeId>(id: Id, fn: PatchFn<Id>): void
 ```
 
-安定 ID に変形を登録する。
-
-- 引数: `id` (安定 ID。型で検査され、未知 ID は通らない)、`fn` (`(node, ctx) => UINode`。返したノードがそのまま使われる)。
-- 返す値: なし。
-- 効果: 走査はボトムアップで、子は適用済みの状態で渡ってくる。照合は適用前の ID に対して行い、出力には再帰しない。同一ノードの複数パッチは登録順に連鎖する。
-- 注意: 存在しない ID への登録は無害 (走らないだけ)。仮想化で画面外のノードは訪れない。`fn` は純粋に書く (呼ばれる回数は不定)。
+安定 ID に変形を登録する。走査はボトムアップで、照合は適用前の ID に対して行い、出力には再帰しない。存在しない ID への登録は無害。`fn` は純粋に書く。
 
 ```ts
 ui.patch("chat.message.header.author", (node) =>
@@ -65,9 +65,7 @@ ui.patch("chat.message.header.author", (node) =>
 exists(id: NodeId): boolean
 ```
 
-- 引数: `id` (安定 ID)。
-- 返す値: その ID がこの環境に存在しうれば `true` (`chrome.*` はモバイルに無い)。
-- 効果: 存在確認のみ。登録自体は存在しない ID でも無害なので、事前分岐のためだけに使う。
+その ID がこの環境に存在しうるか。登録自体は存在しない ID でも無害なので、事前分岐のためだけに使う。
 
 ### `ui.wrap`
 
@@ -75,9 +73,7 @@ exists(id: NodeId): boolean
 wrap(node: UINode, wrapper: Omit<NewUINode, "children">): UINode
 ```
 
-- 引数: `node` (包まれる側)、`wrapper` (親。`children` は渡さない)。
-- 返す値: 元ノードを `children: [node]` の新しい親の下に置いたノード。
-- 制限: 包みに core ID (`app.*` / `chrome.*` / `nav.*` / `chat.*`) は使えない。自名前空間と `primitive.*` / `layout.*` のみ。
+ノードを子に包んで返す。包みに core ID (`app.*` / `chrome.*` / `nav.*` / `chat.*`) は使えない。
 
 ### `ui.after`
 
@@ -85,9 +81,7 @@ wrap(node: UINode, wrapper: Omit<NewUINode, "children">): UINode
 after(node: UINode, sibling: UINode): UINode
 ```
 
-- 引数: 対象ノードと兄弟ノード。
-- 返す値: `{ id: "layout.row", children: [node, sibling] }` で包んだ行ノード。
-- 効果: 後に兄弟を足す。出力は最終形として扱われる。
+後に兄弟を足す。`layout.row` で包んで返す。出力は最終形として扱われる。
 
 ### `ui.before`
 
@@ -95,9 +89,7 @@ after(node: UINode, sibling: UINode): UINode
 before(node: UINode, sibling: UINode): UINode
 ```
 
-- 引数: 対象ノードと兄弟ノード。
-- 返す値: `{ id: "layout.row", children: [sibling, node] }` で包んだ行ノード。
-- 効果: 前に兄弟を足す。出力は最終形として扱われる。
+前に兄弟を足す。`layout.row` で包んで返す。出力は最終形として扱われる。
 
 ### `ui.settings`
 
@@ -105,10 +97,7 @@ before(node: UINode, sibling: UINode): UINode
 settings(fn: () => UINode): void
 ```
 
-- 引数: ノード工場。呼ばれるのは表示時。
-- 返す値: なし。
-- 効果: 表示専用の設定頁を登録する。設定画面にその頁が出る。
-- 制限: 操作部品は置いても押せない。保存は設定画面の側で行い、パッチの中から `storage.set` を呼ばない。
+表示専用の設定頁を登録する。操作部品は置いても押せない。保存は設定画面の側で行う。
 
 ### `ui.stack`
 
@@ -116,8 +105,7 @@ settings(fn: () => UINode): void
 stack(nodes: UINode[]): UINode
 ```
 
-- 引数: 積むノード列。
-- 返す値: `{ id: "layout.column", children: nodes }` の縦列ノード。
+縦に積む。`layout.column` を返す。
 
 ### `ui.node`
 
@@ -125,9 +113,7 @@ stack(nodes: UINode[]): UINode
 node(id: CreatableNodeId, props?: Record<string, unknown>, children?: UINode[]): NewUINode
 ```
 
-- 引数: `id` (作れる ID のみ。`plugin.`＋自 ID の `.`→`_`、または `primitive.*` / `layout.*`)、`props` (任意の付随値)、`children`。
-- 返す値: `{ id, props?, children? }` の新ノード。
-- 制限: core ID (`app.*` 等) を作るとその出力ごと捨てられる。
+自名前空間のノードを作る。core ID (`app.*` 等) を作るとその出力ごと捨てられる。
 
 ### `ui.text`
 
@@ -135,8 +121,7 @@ node(id: CreatableNodeId, props?: Record<string, unknown>, children?: UINode[]):
 text(value: string): NewUINode
 ```
 
-- 引数: 表示文字列。
-- 返す値: `primitive.text` ノード (`props.value` に文字列を持つ)。
+`primitive.text` を作る。表示文字列を持つノードを返す。
 
 ### `ui.badge`
 
@@ -144,9 +129,7 @@ text(value: string): NewUINode
 badge(opts: { text: string; tone?: string }): NewUINode
 ```
 
-- 引数: 標識 (`text` と任意の `tone`)。
-- 返す値: `primitive.badge` ノード。
-- 注意: `tone` 等の見た目指定はテーマの持ち物のため落とす。
+`primitive.badge` を作る。`tone` 等の見た目指定はテーマの持ち物のため落とす。
 
 ### `ui.button`
 
@@ -154,9 +137,7 @@ badge(opts: { text: string; tone?: string }): NewUINode
 button(opts: { label: string; onPress: () => void }): NewUINode
 ```
 
-- 引数: 標識＋押下動作。
-- 返す値: `primitive.button` ノード。
-- 注意: `onPress` 等の関数はホスト境界を越えられず黙って落とす。`button` は設定画面では押せない。
+`primitive.button` を作る。`onPress` 等の関数は境界を越えられず黙って落とす。設定画面では押せない。
 
 ### `ui.icon`
 
@@ -164,51 +145,59 @@ button(opts: { label: string; onPress: () => void }): NewUINode
 icon(name: string): NewUINode
 ```
 
-- 引数: 絵文字名。
-- 返す値: `primitive.icon` ノード (`props.name` に名を持つ)。
+`primitive.icon` を作る。絵文字名を持つノードを返す。
 
 ## `log`
 
-`log` 能力の記録。効果: 記録に残る。引数は記録文。返す値なし。
+### `log.info`
 
 ```ts
-info: (msg: string) => void
-warn: (msg: string) => void
-error: (msg: string) => void
+info(msg: string): void
 ```
 
-## `storage`
+記録に残す (情報)。引数は記録文。
 
-ホスト側の小さな置き場。プラグイン毎に分かれ、再読込を越えて生きる。
+### `log.warn`
+
+```ts
+warn(msg: string): void
+```
+
+記録に残す (警告)。引数は記録文。
+
+### `log.error`
+
+```ts
+error(msg: string): void
+```
+
+記録に残す (異常)。引数は記録文。
+
+## `storage`
 
 ### `storage.get`
 
 ```ts
-get: (key: string) => string | null
+get(key: string): string | null
 ```
 
-- 引数: 鍵。
-- 返す値: 不在で `null`。
+鍵を読む。不在で `null` を返す。
 
 ### `storage.set`
 
 ```ts
-set: (key: string, value: string) => void
+set(key: string, value: string): void
 ```
 
-- 引数: 鍵と値。
-- 効果: 即時保存される。
-- 制限: パッチの中から呼ばない (設定画面の側で保存する)。
+鍵に書く。即時保存される。パッチの中から呼ばない。
 
 ### `storage.remove`
 
 ```ts
-remove: (key: string) => void
+remove(key: string): void
 ```
 
-- 引数: 鍵。
-- 効果: 即時保存される。
-- 制限: パッチの中から呼ばない。
+鍵を消す。即時保存される。パッチの中から呼ばない。
 
 ### `storage.getJSON`
 
@@ -216,8 +205,7 @@ remove: (key: string) => void
 getJSON<T>(key: string, fallback: T): T
 ```
 
-- 引数: 鍵と `fallback` (不在時と壊れJSONの両方で返る)。
-- 返す値: 保存値、または `fallback`。
+JSON で読む。不在時と壊れ JSON の両方で `fallback` を返す。パッチの中から呼ばない。
 
 ### `storage.setJSON`
 
@@ -225,8 +213,7 @@ getJSON<T>(key: string, fallback: T): T
 setJSON(key: string, value: unknown): void
 ```
 
-- 引数: 鍵と値 (JSON 化して保存する)。
-- 制限: パッチの中から呼ばない。
+JSON 化して書く。パッチの中から呼ばない。
 
 ## インターフェース
 
@@ -234,20 +221,25 @@ setJSON(key: string, value: unknown): void
 
 ```ts
 interface UINode {
+  /** The stable ID. */
   id: NodeId | PluginNodeId;
+  /** Distinguishes siblings sharing an id under one parent. Read-only. */
   readonly key?: string;
+  /** The states currently held. */
   readonly states?: readonly NodeState[];
+  /**
+   * The colour the data carries (`#RRGGBB`): a role colour, a folder colour.
+   *
+   * Not a style. Where it lands is the theme's choice, and it only fills a
+   * property written as `$data.tint`.
+   */
   readonly tint?: string;
   props?: Record<string, unknown>;
   children?: UINode[];
 }
 ```
 
-- `id`: 安定 ID。
-- `key`: 同親下の同 ID 兄弟の区別。読取専用。
-- `states`: 現在の状態。読取専用。
-- `tint`: データ由来色 (`#RRGGBB`)。書く場所はテーマが決める。読取専用。
-- `props` / `children`: 付随値と子。
+画面上の部品 1 個。`key`・`states`・色・参照は読取専用で、出力側で変えられない。
 
 ### `NewUINode`
 
@@ -258,7 +250,6 @@ interface NewUINode extends UINode {
 ```
 
 作る側のノード。`id` が作れる ID に限られる以外は `UINode` と同じ。
-`key`・`states`・色・参照は入力木から継承され、出力側で変えられない。
 
 ### `PatchContext`
 
@@ -268,8 +259,7 @@ interface PatchContext<Id extends NodeId = NodeId> {
 }
 ```
 
-パッチが受け取る文脈。`data` は ID から型が付き (`ctx.data.author.bot` 等)、
-該当なしは `undefined`。読取専用。`Context` は別名である。
+パッチが受け取る文脈。`data` は ID から型が付き、該当なしは `undefined`。読取専用。
 
 ### `PatchFn`
 
@@ -294,6 +284,10 @@ interface UserData {
 }
 ```
 
+判別可能な範囲での 1 人の利用者像。
+
+欄: `id`・`username`・`displayName`・`bot`・`avatarUrl?`
+
 ### `MessageData`
 
 ```ts
@@ -303,6 +297,7 @@ interface MessageData {
   readonly guildId?: string;
   readonly createdAt: string;
   readonly editedAt?: string;
+  /** Plain text. Parsed Markdown appears as nodes. */
   readonly content: string;
   readonly author: UserData;
   readonly pinned: boolean;
@@ -310,7 +305,9 @@ interface MessageData {
 }
 ```
 
-`content` は素文。装飾済み本文はノード側にある。
+メッセージ 1 件。`content` は素文で、装飾済み本文はノード側にある。
+
+欄: `id`・`channelId`・`guildId?`・`createdAt`・`editedAt?`・`content`・`author`・`pinned`・`referencedMessageId?`
 
 ### `GuildData`
 
@@ -323,6 +320,10 @@ interface GuildData {
   readonly mentionCount: number;
 }
 ```
+
+ギルド 1 個と未読状態。
+
+欄: `id`・`name`・`iconUrl?`・`unread`・`mentionCount`
 
 ### `ChannelData`
 
@@ -338,6 +339,10 @@ interface ChannelData {
 }
 ```
 
+チャンネル 1 個と未読状態。
+
+欄: `id`・`name`・`type`・`topic?`・`nsfw`・`unread`・`mentionCount`
+
 ### `CategoryData`
 
 ```ts
@@ -347,6 +352,10 @@ interface CategoryData {
   readonly collapsed: boolean;
 }
 ```
+
+カテゴリ 1 個。
+
+欄: `id`・`name`・`collapsed`
 
 ### `DmData`
 
@@ -359,18 +368,26 @@ interface DmData {
 }
 ```
 
+DM 1 件。
+
+欄: `id`・`recipients`・`unread`・`mentionCount`
+
 ### `MemberData`
 
 ```ts
 interface MemberData {
   readonly user: UserData;
+  /** Their name in this guild, or `user.displayName` if unset. */
   readonly displayName: string;
+  /** `online` / `idle` / `dnd` / `offline` */
   readonly status: string;
   readonly roles: readonly string[];
 }
 ```
 
-`status` は `online` / `idle` / `dnd` / `offline`。`roles` は ID ではなく名列。
+名簿の 1 人。`roles` は ID ではなく名列。
+
+欄: `user`・`displayName`・`status`・`roles`
 
 ### `AttachmentData`
 
@@ -386,6 +403,10 @@ interface AttachmentData {
 }
 ```
 
+添付 1 件。
+
+欄: `id`・`filename`・`size`・`contentType?`・`url`・`width?`・`height?`
+
 ### `EmbedData`
 
 ```ts
@@ -398,16 +419,143 @@ interface EmbedData {
 }
 ```
 
+埋め込み 1 件。
+
+欄: `type`・`title?`・`description?`・`url?`・`color?`
+
 ## 型エイリアスと列挙的型
 
 ### `NodeId`
 
-安定 ID の合併型 (121 個。未知 ID は型で通らない)。一覧は
-[安定 ID カタログ](ja/theme/ids.md) を見ること。
-
 ```ts
-type NodeId = "app.root" | "app.window" | /* ... */ | "layout.scrollbar.thumb";
+type NodeId =
+  | "app.root"
+  | "app.window"
+  | "app.screen"
+  | "app.screen.loading"
+  | "app.screen.login"
+  | "app.screen.login.title"
+  | "app.screen.login.hint"
+  | "app.screen.login.field"
+  | "app.screen.login.label"
+  | "app.screen.login.error"
+  | "app.screen.login.card"
+  | "app.screen.login.forgot"
+  | "app.screen.login.divider"
+  | "app.screen.login.qr_button"
+  | "app.screen.login.register"
+  | "app.screen.main"
+  | "chrome.titlebar"
+  | "chrome.titlebar.title"
+  | "chrome.titlebar.controls"
+  | "chrome.titlebar.control"
+  | "nav.guild_list"
+  | "nav.guild_list.home"
+  | "nav.guild_list.item"
+  | "nav.guild_list.item.icon"
+  | "nav.guild_list.item.pill"
+  | "nav.guild_list.item.badge"
+  | "nav.guild_list.folder"
+  | "nav.guild_list.folder.icon"
+  | "nav.channel_list"
+  | "nav.channel_list.header"
+  | "nav.channel_list.category"
+  | "nav.channel_list.item"
+  | "nav.channel_list.item.icon"
+  | "nav.channel_list.item.name"
+  | "nav.channel_list.item.badge"
+  | "nav.dm_list"
+  | "nav.dm_list.item"
+  | "nav.sidebar"
+  | "nav.sidebar.lists"
+  | "nav.user_panel"
+  | "nav.user_panel.avatar"
+  | "nav.user_panel.presence"
+  | "nav.user_panel.name"
+  | "nav.user_panel.status"
+  | "nav.member_list"
+  | "nav.member_list.sheet"
+  | "nav.member_list.group"
+  | "nav.member_list.item"
+  | "nav.member_list.item.avatar"
+  | "nav.member_list.item.presence"
+  | "nav.member_list.item.name"
+  | "chat.view"
+  | "chat.header"
+  | "chat.header.title"
+  | "chat.header.topic"
+  | "chat.message_list"
+  | "chat.message_list.day_divider"
+  | "chat.message"
+  | "chat.message.avatar"
+  | "chat.message.header"
+  | "chat.message.header.author"
+  | "chat.message.header.badges"
+  | "chat.message.header.timestamp"
+  | "chat.message.reply_ref"
+  | "chat.message.reply_ref.avatar"
+  | "chat.message.content"
+  | "chat.message.content.quote"
+  | "chat.message.attachments"
+  | "chat.message.attachment"
+  | "chat.message.embeds"
+  | "chat.message.embed"
+  | "chat.message.actions"
+  | "chat.typing_indicator"
+  | "chat.input"
+  | "chat.input.field"
+  | "chat.input.toolbar"
+  | "chat.input.actions"
+  | "overlay.layer"
+  | "overlay.scrim"
+  | "overlay.popover"
+  | "overlay.sheet"
+  | "overlay.sheet.handle"
+  | "overlay.drawer"
+  | "overlay.menu"
+  | "overlay.menu.item"
+  | "overlay.menu.item.icon"
+  | "overlay.menu.item.label"
+  | "overlay.menu.separator"
+  | "overlay.modal"
+  | "overlay.modal.title"
+  | "overlay.modal.body"
+  | "overlay.modal.preview"
+  | "overlay.modal.actions"
+  | "overlay.modal.action"
+  | "overlay.modal.action.label"
+  | "overlay.tooltip"
+  | "overlay.toast"
+  | "settings.screen"
+  | "settings.nav"
+  | "settings.page"
+  | "primitive.text"
+  | "primitive.image"
+  | "primitive.icon"
+  | "primitive.qr"
+  | "primitive.avatar"
+  | "primitive.badge"
+  | "primitive.button"
+  | "primitive.divider"
+  | "primitive.spinner"
+  | "primitive.mention"
+  | "primitive.emoji"
+  | "primitive.code_block"
+  | "primitive.spoiler"
+  | "primitive.link"
+  | "layout.row"
+  | "layout.column"
+  | "layout.stack"
+  | "layout.scroll"
+  | "layout.spacer"
+  | "layout.scrollbar"
+  | "layout.scrollbar.thumb"
+  ;
 ```
+
+安定 ID の合併型 (121 個)。未知 ID は型で通らない。一覧は安定 ID カタログを見ること。
+
+一覧は[安定 ID カタログ](ja/theme/ids.md)を見ること。
 
 ### `PluginNodeId`
 
@@ -415,8 +563,7 @@ type NodeId = "app.root" | "app.window" | /* ... */ | "layout.scrollbar.thumb";
 type PluginNodeId = `plugin.${string}`;
 ```
 
-自名前空間の ID。接頭辞は `plugin.`＋自 ID の `.`→`_`。テーマが狙う
-ための掛け鉤であり、互換性の維持は作者の責任である。
+自名前空間の ID。`plugin.`＋自 ID の `.`→`_`。互換性の維持は作者の責任である。
 
 ### `CreatableNodeId`
 
@@ -424,37 +571,119 @@ type PluginNodeId = `plugin.${string}`;
 type CreatableNodeId = CoreCreatableNodeId | PluginNodeId;
 ```
 
-プラグインが作れる ID。`app.*` / `chrome.*` / `nav.*` / `chat.*` は
-作れない (実在の対象と結びついているため)。
+プラグインが作れる ID。`app.*` / `chrome.*` / `nav.*` / `chat.*` は作れない。
 
 ### `CoreCreatableNodeId`
 
-作れる core 側 ID の合併型: `overlay.*`・`settings.*`・`primitive.*`・
-`layout.*` (44 個)。
+```ts
+type CoreCreatableNodeId =
+  | "overlay.layer"
+  | "overlay.scrim"
+  | "overlay.popover"
+  | "overlay.sheet"
+  | "overlay.sheet.handle"
+  | "overlay.drawer"
+  | "overlay.menu"
+  | "overlay.menu.item"
+  | "overlay.menu.item.icon"
+  | "overlay.menu.item.label"
+  | "overlay.menu.separator"
+  | "overlay.modal"
+  | "overlay.modal.title"
+  | "overlay.modal.body"
+  | "overlay.modal.preview"
+  | "overlay.modal.actions"
+  | "overlay.modal.action"
+  | "overlay.modal.action.label"
+  | "overlay.tooltip"
+  | "overlay.toast"
+  | "settings.screen"
+  | "settings.nav"
+  | "settings.page"
+  | "primitive.text"
+  | "primitive.image"
+  | "primitive.icon"
+  | "primitive.qr"
+  | "primitive.avatar"
+  | "primitive.badge"
+  | "primitive.button"
+  | "primitive.divider"
+  | "primitive.spinner"
+  | "primitive.mention"
+  | "primitive.emoji"
+  | "primitive.code_block"
+  | "primitive.spoiler"
+  | "primitive.link"
+  | "layout.row"
+  | "layout.column"
+  | "layout.stack"
+  | "layout.scroll"
+  | "layout.spacer"
+  | "layout.scrollbar"
+  | "layout.scrollbar.thumb"
+  ;
+```
+
+作れる core 側 ID の合併型。`overlay.*`・`settings.*`・`primitive.*`・`layout.*` (44 個)。
 
 ### `NodeState`
 
 ```ts
 type NodeState =
-  | "hover" | "active" | "focus" | "selected" | "disabled"
-  | "unread" | "mentioned" | "loading" | "grouped" | "collapsed";
+  | "hover"
+  | "active"
+  | "focus"
+  | "selected"
+  | "disabled"
+  | "unread"
+  | "mentioned"
+  | "loading"
+  | "grouped"
+  | "collapsed";
 ```
 
-テーマが条件にできる状態と同じ集合である。
+テーマが条件にできる状態と同じ集合 (10 個)。
 
 ### `DataByNode`
-
-ID からデータ型への対応表。`ctx.data` の型付けの根拠である。
 
 ```ts
 interface DataByNode {
   "nav.guild_list.item": GuildData;
+  "nav.guild_list.item.icon": GuildData;
+  "nav.guild_list.item.pill": GuildData;
+  "nav.guild_list.item.badge": GuildData;
+  "nav.channel_list.category": CategoryData;
+  "nav.channel_list.item": ChannelData;
+  "nav.channel_list.item.icon": ChannelData;
+  "nav.channel_list.item.name": ChannelData;
+  "nav.channel_list.item.badge": ChannelData;
+  "nav.dm_list.item": DmData;
+  "nav.member_list.item": MemberData;
+  "nav.member_list.item.avatar": MemberData;
+  "nav.member_list.item.presence": MemberData;
+  "nav.member_list.item.name": MemberData;
+  "chat.header": ChannelData;
+  "chat.header.title": ChannelData;
+  "chat.header.topic": ChannelData;
   "chat.message": MessageData;
-  /* ... */
+  "chat.message.avatar": MessageData;
+  "chat.message.header": MessageData;
+  "chat.message.header.author": MessageData;
+  "chat.message.header.badges": MessageData;
+  "chat.message.header.timestamp": MessageData;
+  "chat.message.reply_ref": MessageData;
+  "chat.message.content": MessageData;
+  "chat.message.attachments": MessageData;
+  "chat.message.attachment": AttachmentData;
+  "chat.message.embeds": MessageData;
+  "chat.message.embed": EmbedData;
+  "chat.message.actions": MessageData;
 }
 ```
 
-対応が無い ID の `ctx.data` は `undefined` である。
+ID からデータ型への対応表。`ctx.data` の型付けの根拠である。対応が無い ID は `undefined`。
+
+<!-- END GENERATED: api -->
 
 ## イベント
 

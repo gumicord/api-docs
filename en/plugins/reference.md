@@ -38,6 +38,11 @@ ui.patch("chat.message.header.author", (node, ctx) => {
 });
 ```
 
+<!-- BEGIN GENERATED: api -->
+
+> ⚠️ **This section is generated from `sdk/src`.**
+> Do not edit it here; change the SDK TSDoc instead.
+
 ## `ui`
 
 ### `ui.patch`
@@ -46,17 +51,28 @@ ui.patch("chat.message.header.author", (node, ctx) => {
 patch<Id extends NodeId>(id: Id, fn: PatchFn<Id>): void
 ```
 
-Registers a transform on a stable ID.
+Registers a node transform against a stable ID.
 
-- Arguments: `id` (stable ID; type-checked, unknown IDs do not pass),
-  `fn` (`(node, ctx) => UINode`; the returned node is used as-is).
-- Returns: nothing.
-- Effects: bottom-up traversal; children arrive already patched. Matching
-  uses the pre-apply ID; output is not recursed into. Same-node patches
-  chain in registration order.
-- Notes: registering on a missing ID is harmless (never runs).
-  Virtualized offscreen nodes are never visited. Keep `fn` pure (call
-  counts per message are undefined).
+How it applies:
+- traversal is bottom-up, children before their parent
+- matching uses the stable ID as it was before any patch
+- a patch's output is not recursed into; it is final
+- several patches on one node chain in registration order
+
+So a patch runs exactly once per node.
+
+Registering against a node that does not exist here (`chrome.*` on
+mobile) is not an error; it simply never runs. To branch beforehand,
+use `exists`.
+Virtualisation means offscreen nodes are never visited (rule V1), so
+nothing can walk every message. Use Gateway event middleware instead.
+
+`fn` must be pure (rule P7): how many times it runs for one message is
+not defined, since it runs again each time the node leaves the screen
+and comes back, and a side effect would not add up.
+
+`ctx.data` is typed from `id`, so registering against
+`chat.message.header.author` types `ctx.data.author.bot`.
 
 ```ts
 ui.patch("chat.message.header.author", (node) =>
@@ -70,11 +86,10 @@ ui.patch("chat.message.header.author", (node) =>
 exists(id: NodeId): boolean
 ```
 
-- Argument: `id` (stable ID).
-- Returns: `true` when the ID can exist here (`chrome.*` is absent on
-  mobile).
-- Effects: existence check only. Registering on a missing ID is already
-  harmless, so this is only for beforehand branching.
+Whether the node can exist in this environment.
+
+`chrome.*` does not exist on mobile. Patching a missing ID is harmless,
+so this is only for branching beforehand.
 
 ### `ui.wrap`
 
@@ -82,10 +97,11 @@ exists(id: NodeId): boolean
 wrap(node: UINode, wrapper: Omit<NewUINode, "children">): UINode
 ```
 
-- Arguments: wrapped node, parent (no `children` passed).
-- Returns: the original under `children: [node]` of a new parent.
-- Limit: core IDs (`app.*` / `chrome.*` / `nav.*` / `chat.*`) cannot wrap.
-  Own namespace plus `primitive.*` / `layout.*` only.
+Wraps a node as the child of another.
+
+`wrapper` cannot be a core ID such as `chat.*`: a plugin transforms the
+nodes it is given, it does not manufacture core ones. Only its own
+namespace and `primitive.*` / `layout.*` may wrap.
 
 ### `ui.after`
 
@@ -93,10 +109,7 @@ wrap(node: UINode, wrapper: Omit<NewUINode, "children">): UINode
 after(node: UINode, sibling: UINode): UINode
 ```
 
-- Arguments: target node and sibling.
-- Returns: wrapping row node
-  (`{ id: "layout.row", children: [node, sibling] }`).
-- Effects: adds a sibling after. Output counts as final.
+Adds a sibling after the node.
 
 ### `ui.before`
 
@@ -104,10 +117,7 @@ after(node: UINode, sibling: UINode): UINode
 before(node: UINode, sibling: UINode): UINode
 ```
 
-- Arguments: target node and sibling.
-- Returns: wrapping row node
-  (`{ id: "layout.row", children: [sibling, node] }`).
-- Effects: adds a sibling before. Output counts as final.
+Adds a sibling before the node.
 
 ### `ui.settings`
 
@@ -115,12 +125,11 @@ before(node: UINode, sibling: UINode): UINode
 settings(fn: () => UINode): void
 ```
 
-- Argument: node factory, called at display time.
-- Returns: nothing.
-- Effects: registers a display-only settings page. The page shows in
-  settings.
-- Limit: no actionable widgets yet. Persist from the settings side, never
-  from a patch.
+Provides this plugin's settings page, shown in the client's settings
+screen when the manifest declares a `settings` entry.
+
+Display-only for now: controls sit inert until the settings event
+channel arrives, so describe, do not operate.
 
 ### `ui.stack`
 
@@ -128,8 +137,7 @@ settings(fn: () => UINode): void
 stack(nodes: UINode[]): UINode
 ```
 
-- Argument: nodes to stack.
-- Returns: column node (`{ id: "layout.column", children: nodes }`).
+Stacks nodes vertically.
 
 ### `ui.node`
 
@@ -137,11 +145,7 @@ stack(nodes: UINode[]): UINode
 node(id: CreatableNodeId, props?: Record<string, unknown>, children?: UINode[]): NewUINode
 ```
 
-- Arguments: `id` (creatable IDs only: `plugin.` + own ID with `.` as `_`,
-  or `primitive.*` / `layout.*`), `props`, `children`.
-- Returns: new node (`{ id, props?, children? }`).
-- Limit: forging a core ID (`app.*` and friends) discards that whole
-  output.
+Creates any creatable node, for a plugin's own IDs.
 
 ### `ui.text`
 
@@ -149,8 +153,7 @@ node(id: CreatableNodeId, props?: Record<string, unknown>, children?: UINode[]):
 text(value: string): NewUINode
 ```
 
-- Argument: display string.
-- Returns: `primitive.text` node (string in `props.value`).
+Creates a `primitive.text` node holding the string.
 
 ### `ui.badge`
 
@@ -158,9 +161,9 @@ text(value: string): NewUINode
 badge(opts: { text: string; tone?: string }): NewUINode
 ```
 
-- Argument: badge mark (`text` plus optional `tone`).
-- Returns: `primitive.badge` node.
-- Note: theme-owned specs such as `tone` drop.
+Creates a `primitive.badge` node.
+
+`tone` is theme-owned and drops; the badge keeps its text.
 
 ### `ui.button`
 
@@ -168,10 +171,10 @@ badge(opts: { text: string; tone?: string }): NewUINode
 button(opts: { label: string; onPress: () => void }): NewUINode
 ```
 
-- Argument: label plus press action.
-- Returns: `primitive.button` node.
-- Note: functions (`onPress`) cannot cross the host boundary and drop
-  silently. `button` is inert on settings screens.
+Creates a `primitive.button` node.
+
+Functions cannot cross the host boundary, so `onPress` drops silently
+and the button is inert on settings screens.
 
 ### `ui.icon`
 
@@ -179,52 +182,59 @@ button(opts: { label: string; onPress: () => void }): NewUINode
 icon(name: string): NewUINode
 ```
 
-- Argument: picture name.
-- Returns: `primitive.icon` node (name in `props.name`).
+Creates a `primitive.icon` node showing the named picture.
 
 ## `log`
 
-`log` capability logging. Effect: lands in the host log. Argument is the
-message. Returns nothing.
+### `log.info`
 
 ```ts
-info: (msg: string) => void
-warn: (msg: string) => void
-error: (msg: string) => void
+info(msg: string): void
 ```
 
-## `storage`
+Records an informational message.
 
-Small host-side store. Split per plugin, survives reloads.
+### `log.warn`
+
+```ts
+warn(msg: string): void
+```
+
+Records a warning.
+
+### `log.error`
+
+```ts
+error(msg: string): void
+```
+
+Records an error.
+
+## `storage`
 
 ### `storage.get`
 
 ```ts
-get: (key: string) => string | null
+get(key: string): string | null
 ```
 
-- Argument: key.
-- Returns: `null` when missing.
+Reads a key. Yields `null` when missing.
 
 ### `storage.set`
 
 ```ts
-set: (key: string, value: string) => void
+set(key: string, value: string): void
 ```
 
-- Arguments: key and value.
-- Effects: persists immediately.
-- Limit: never call from inside a patch (persist from the settings side).
+Writes a key. Persists immediately; never call from inside a patch.
 
 ### `storage.remove`
 
 ```ts
-remove: (key: string) => void
+remove(key: string): void
 ```
 
-- Argument: key.
-- Effects: persists immediately.
-- Limit: never call from inside a patch.
+Deletes a key. Persists immediately; never call from inside a patch.
 
 ### `storage.getJSON`
 
@@ -232,9 +242,9 @@ remove: (key: string) => void
 getJSON<T>(key: string, fallback: T): T
 ```
 
-- Arguments: key and `fallback` (returned for both missing and broken
-  JSON).
-- Returns: stored value, or `fallback`.
+Reads JSON. Returns `fallback` for both missing and broken JSON.
+
+Never call from inside a patch.
 
 ### `storage.setJSON`
 
@@ -242,8 +252,7 @@ getJSON<T>(key: string, fallback: T): T
 setJSON(key: string, value: unknown): void
 ```
 
-- Arguments: key and value (stored JSON-encoded).
-- Limit: never call from inside a patch.
+Writes JSON-encoded. Never call from inside a patch.
 
 ## Interfaces
 
@@ -251,21 +260,23 @@ setJSON(key: string, value: unknown): void
 
 ```ts
 interface UINode {
+  /** The stable ID. */
   id: NodeId | PluginNodeId;
+  /** Distinguishes siblings sharing an id under one parent. Read-only. */
   readonly key?: string;
+  /** The states currently held. */
   readonly states?: readonly NodeState[];
+  /**
+   * The colour the data carries (`#RRGGBB`): a role colour, a folder colour.
+   *
+   * Not a style. Where it lands is the theme's choice, and it only fills a
+   * property written as `$data.tint`.
+   */
   readonly tint?: string;
   props?: Record<string, unknown>;
   children?: UINode[];
 }
 ```
-
-- `id`: stable ID.
-- `key`: tells same-ID siblings apart. Read-only.
-- `states`: currently held. Read-only.
-- `tint`: data-carried color (`#RRGGBB`). Where it lands is the theme's
-  call. Read-only.
-- `props` / `children`: attached values and children.
 
 ### `NewUINode`
 
@@ -275,9 +286,7 @@ interface NewUINode extends UINode {
 }
 ```
 
-A created node. Same as `UINode` except `id` is limited to creatable IDs.
-`key`, `states`, colors carry over from the input tree and cannot be
-rewritten.
+A node a plugin creates. Core IDs are not allowed.
 
 ### `PatchContext`
 
@@ -287,9 +296,10 @@ interface PatchContext<Id extends NodeId = NodeId> {
 }
 ```
 
-Per-patch context. `data` is typed from the ID
-(`ctx.data.author.bot`); `undefined` where the node carries none.
-Read-only. `Context` is an alias.
+The context a patch receives.
+
+`data` is typed from the stable ID, so `ctx.data.author.bot` is type
+safe. It is `undefined` on a node that carries none.
 
 ### `PatchFn`
 
@@ -300,7 +310,12 @@ type PatchFn<Id extends NodeId = NodeId> = (
 ) => UINode;
 ```
 
-A node transform. Must be pure (call counts are undefined).
+A node transform.
+
+It must be pure (rule P7). Virtualisation leaves it undefined how many
+times it runs for one message — again each time the node leaves the
+screen and comes back — so a side effect is unpredictable. To react to
+something happening, use Gateway event middleware.
 
 ### `UserData`
 
@@ -314,6 +329,20 @@ interface UserData {
 }
 ```
 
+The domain objects exposed as `data`.
+
+These are part of the extension ABI too: adding is not breaking, but
+removing and renaming are.
+
+Discord's raw payloads are never exposed. Exposing one would make it
+part of the ABI and tie us to Discord's changes.
+
+Which node carries which type is set by `DataByNode` in `ids.ts`.
+
+One Discord user, as a plugin may see them.
+
+Fields: `id`・`username`・`displayName`・`bot`・`avatarUrl?`
+
 ### `MessageData`
 
 ```ts
@@ -323,6 +352,7 @@ interface MessageData {
   readonly guildId?: string;
   readonly createdAt: string;
   readonly editedAt?: string;
+  /** Plain text. Parsed Markdown appears as nodes. */
   readonly content: string;
   readonly author: UserData;
   readonly pinned: boolean;
@@ -330,7 +360,9 @@ interface MessageData {
 }
 ```
 
-`content` is plain text; the decorated body lives in nodes.
+One chat message. `content` is plain text; the decorated body lives in nodes.
+
+Fields: `id`・`channelId`・`guildId?`・`createdAt`・`editedAt?`・`content`・`author`・`pinned`・`referencedMessageId?`
 
 ### `GuildData`
 
@@ -343,6 +375,10 @@ interface GuildData {
   readonly mentionCount: number;
 }
 ```
+
+One guild, with its unread state.
+
+Fields: `id`・`name`・`iconUrl?`・`unread`・`mentionCount`
 
 ### `ChannelData`
 
@@ -358,6 +394,10 @@ interface ChannelData {
 }
 ```
 
+One channel, with its unread state.
+
+Fields: `id`・`name`・`type`・`topic?`・`nsfw`・`unread`・`mentionCount`
+
 ### `CategoryData`
 
 ```ts
@@ -367,6 +407,10 @@ interface CategoryData {
   readonly collapsed: boolean;
 }
 ```
+
+One channel category.
+
+Fields: `id`・`name`・`collapsed`
 
 ### `DmData`
 
@@ -379,19 +423,29 @@ interface DmData {
 }
 ```
 
+One direct message thread.
+
+Fields: `id`・`recipients`・`unread`・`mentionCount`
+
 ### `MemberData`
 
 ```ts
 interface MemberData {
   readonly user: UserData;
+  /** Their name in this guild, or `user.displayName` if unset. */
   readonly displayName: string;
+  /** `online` / `idle` / `dnd` / `offline` */
   readonly status: string;
   readonly roles: readonly string[];
 }
 ```
 
-`status` is `online` / `idle` / `dnd` / `offline`. `roles` are names, not
-IDs.
+One person in the member list.
+
+Roles appear by name, not identifier: an identifier means nothing to a
+user, and a plugin showing one would just show a number.
+
+Fields: `user`・`displayName`・`status`・`roles`
 
 ### `AttachmentData`
 
@@ -407,6 +461,10 @@ interface AttachmentData {
 }
 ```
 
+One message attachment.
+
+Fields: `id`・`filename`・`size`・`contentType?`・`url`・`width?`・`height?`
+
 ### `EmbedData`
 
 ```ts
@@ -419,16 +477,143 @@ interface EmbedData {
 }
 ```
 
+One message embed.
+
+Fields: `type`・`title?`・`description?`・`url?`・`color?`
+
 ## Type aliases and enum-like types
 
 ### `NodeId`
 
-Union of stable IDs (121; unknown IDs do not pass the type check). For
-the list see the [stable ID catalog](en/theme/ids.md).
-
 ```ts
-type NodeId = "app.root" | "app.window" | /* ... */ | "layout.scrollbar.thumb";
+type NodeId =
+  | "app.root"
+  | "app.window"
+  | "app.screen"
+  | "app.screen.loading"
+  | "app.screen.login"
+  | "app.screen.login.title"
+  | "app.screen.login.hint"
+  | "app.screen.login.field"
+  | "app.screen.login.label"
+  | "app.screen.login.error"
+  | "app.screen.login.card"
+  | "app.screen.login.forgot"
+  | "app.screen.login.divider"
+  | "app.screen.login.qr_button"
+  | "app.screen.login.register"
+  | "app.screen.main"
+  | "chrome.titlebar"
+  | "chrome.titlebar.title"
+  | "chrome.titlebar.controls"
+  | "chrome.titlebar.control"
+  | "nav.guild_list"
+  | "nav.guild_list.home"
+  | "nav.guild_list.item"
+  | "nav.guild_list.item.icon"
+  | "nav.guild_list.item.pill"
+  | "nav.guild_list.item.badge"
+  | "nav.guild_list.folder"
+  | "nav.guild_list.folder.icon"
+  | "nav.channel_list"
+  | "nav.channel_list.header"
+  | "nav.channel_list.category"
+  | "nav.channel_list.item"
+  | "nav.channel_list.item.icon"
+  | "nav.channel_list.item.name"
+  | "nav.channel_list.item.badge"
+  | "nav.dm_list"
+  | "nav.dm_list.item"
+  | "nav.sidebar"
+  | "nav.sidebar.lists"
+  | "nav.user_panel"
+  | "nav.user_panel.avatar"
+  | "nav.user_panel.presence"
+  | "nav.user_panel.name"
+  | "nav.user_panel.status"
+  | "nav.member_list"
+  | "nav.member_list.sheet"
+  | "nav.member_list.group"
+  | "nav.member_list.item"
+  | "nav.member_list.item.avatar"
+  | "nav.member_list.item.presence"
+  | "nav.member_list.item.name"
+  | "chat.view"
+  | "chat.header"
+  | "chat.header.title"
+  | "chat.header.topic"
+  | "chat.message_list"
+  | "chat.message_list.day_divider"
+  | "chat.message"
+  | "chat.message.avatar"
+  | "chat.message.header"
+  | "chat.message.header.author"
+  | "chat.message.header.badges"
+  | "chat.message.header.timestamp"
+  | "chat.message.reply_ref"
+  | "chat.message.reply_ref.avatar"
+  | "chat.message.content"
+  | "chat.message.content.quote"
+  | "chat.message.attachments"
+  | "chat.message.attachment"
+  | "chat.message.embeds"
+  | "chat.message.embed"
+  | "chat.message.actions"
+  | "chat.typing_indicator"
+  | "chat.input"
+  | "chat.input.field"
+  | "chat.input.toolbar"
+  | "chat.input.actions"
+  | "overlay.layer"
+  | "overlay.scrim"
+  | "overlay.popover"
+  | "overlay.sheet"
+  | "overlay.sheet.handle"
+  | "overlay.drawer"
+  | "overlay.menu"
+  | "overlay.menu.item"
+  | "overlay.menu.item.icon"
+  | "overlay.menu.item.label"
+  | "overlay.menu.separator"
+  | "overlay.modal"
+  | "overlay.modal.title"
+  | "overlay.modal.body"
+  | "overlay.modal.preview"
+  | "overlay.modal.actions"
+  | "overlay.modal.action"
+  | "overlay.modal.action.label"
+  | "overlay.tooltip"
+  | "overlay.toast"
+  | "settings.screen"
+  | "settings.nav"
+  | "settings.page"
+  | "primitive.text"
+  | "primitive.image"
+  | "primitive.icon"
+  | "primitive.qr"
+  | "primitive.avatar"
+  | "primitive.badge"
+  | "primitive.button"
+  | "primitive.divider"
+  | "primitive.spinner"
+  | "primitive.mention"
+  | "primitive.emoji"
+  | "primitive.code_block"
+  | "primitive.spoiler"
+  | "primitive.link"
+  | "layout.row"
+  | "layout.column"
+  | "layout.stack"
+  | "layout.scroll"
+  | "layout.spacer"
+  | "layout.scrollbar"
+  | "layout.scrollbar.thumb"
+  ;
 ```
+
+A UITree stable ID. An unknown one fails to build.
+
+For the full list see the [stable ID catalog](en/theme/ids.md).
 
 ### `PluginNodeId`
 
@@ -436,9 +621,11 @@ type NodeId = "app.root" | "app.window" | /* ... */ | "layout.scrollbar.thumb";
 type PluginNodeId = `plugin.${string}`;
 ```
 
-Own-namespace IDs. The prefix is `plugin.` plus the own ID with `.` as
-`_`. A hook for themes to aim at; keeping it compatible is the author's
-call.
+An ID a plugin creates in its own namespace.
+
+The prefix is `plugin.` followed by the plugin ID with `.` replaced by
+`_`. It is a hook for themes to aim at, and its compatibility is the
+plugin author's to keep.
 
 ### `CreatableNodeId`
 
@@ -446,37 +633,130 @@ call.
 type CreatableNodeId = CoreCreatableNodeId | PluginNodeId;
 ```
 
-IDs a plugin may create. `app.*` / `chrome.*` / `nav.*` / `chat.*` cannot
-be created (tied to real domain objects).
+The IDs a plugin may create.
+
+Not `app.*`, `chrome.*`, `nav.*` or `chat.*`: those are tied to real
+domain objects, and forging one would make the accessibility tree lie
+and let another plugin's selector match a node that is not there.
+
+A plugin transforms the nodes it is given; it does not manufacture core
+ones.
 
 ### `CoreCreatableNodeId`
 
-Creatable core-side union: `overlay.*`, `settings.*`, `primitive.*`,
-`layout.*` (44 total).
+```ts
+type CoreCreatableNodeId =
+  | "overlay.layer"
+  | "overlay.scrim"
+  | "overlay.popover"
+  | "overlay.sheet"
+  | "overlay.sheet.handle"
+  | "overlay.drawer"
+  | "overlay.menu"
+  | "overlay.menu.item"
+  | "overlay.menu.item.icon"
+  | "overlay.menu.item.label"
+  | "overlay.menu.separator"
+  | "overlay.modal"
+  | "overlay.modal.title"
+  | "overlay.modal.body"
+  | "overlay.modal.preview"
+  | "overlay.modal.actions"
+  | "overlay.modal.action"
+  | "overlay.modal.action.label"
+  | "overlay.tooltip"
+  | "overlay.toast"
+  | "settings.screen"
+  | "settings.nav"
+  | "settings.page"
+  | "primitive.text"
+  | "primitive.image"
+  | "primitive.icon"
+  | "primitive.qr"
+  | "primitive.avatar"
+  | "primitive.badge"
+  | "primitive.button"
+  | "primitive.divider"
+  | "primitive.spinner"
+  | "primitive.mention"
+  | "primitive.emoji"
+  | "primitive.code_block"
+  | "primitive.spoiler"
+  | "primitive.link"
+  | "layout.row"
+  | "layout.column"
+  | "layout.stack"
+  | "layout.scroll"
+  | "layout.spacer"
+  | "layout.scrollbar"
+  | "layout.scrollbar.thumb"
+  ;
+```
+
+The IDs a plugin may create.
+
+A core node is tied to a real domain object, so a plugin able to forge
+one would make the accessibility tree lie.
+See spec/03-uitree.md 8.2.
 
 ### `NodeState`
 
 ```ts
 type NodeState =
-  | "hover" | "active" | "focus" | "selected" | "disabled"
-  | "unread" | "mentioned" | "loading" | "grouped" | "collapsed";
+  | "hover"
+  | "active"
+  | "focus"
+  | "selected"
+  | "disabled"
+  | "unread"
+  | "mentioned"
+  | "loading"
+  | "grouped"
+  | "collapsed";
 ```
 
-The same set themes can condition on.
+A node state, matching what a theme can condition on.
 
 ### `DataByNode`
-
-Table from ID to data type. What types `ctx.data`.
 
 ```ts
 interface DataByNode {
   "nav.guild_list.item": GuildData;
+  "nav.guild_list.item.icon": GuildData;
+  "nav.guild_list.item.pill": GuildData;
+  "nav.guild_list.item.badge": GuildData;
+  "nav.channel_list.category": CategoryData;
+  "nav.channel_list.item": ChannelData;
+  "nav.channel_list.item.icon": ChannelData;
+  "nav.channel_list.item.name": ChannelData;
+  "nav.channel_list.item.badge": ChannelData;
+  "nav.dm_list.item": DmData;
+  "nav.member_list.item": MemberData;
+  "nav.member_list.item.avatar": MemberData;
+  "nav.member_list.item.presence": MemberData;
+  "nav.member_list.item.name": MemberData;
+  "chat.header": ChannelData;
+  "chat.header.title": ChannelData;
+  "chat.header.topic": ChannelData;
   "chat.message": MessageData;
-  /* ... */
+  "chat.message.avatar": MessageData;
+  "chat.message.header": MessageData;
+  "chat.message.header.author": MessageData;
+  "chat.message.header.badges": MessageData;
+  "chat.message.header.timestamp": MessageData;
+  "chat.message.reply_ref": MessageData;
+  "chat.message.content": MessageData;
+  "chat.message.attachments": MessageData;
+  "chat.message.attachment": AttachmentData;
+  "chat.message.embeds": MessageData;
+  "chat.message.embed": EmbedData;
+  "chat.message.actions": MessageData;
 }
 ```
 
-IDs without a mapping read `ctx.data` as `undefined`.
+The `data` each node kind carries.
+
+<!-- END GENERATED: api -->
 
 ## Events
 
