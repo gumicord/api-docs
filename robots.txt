@@ -1,4 +1,2 @@
 User-agent: *
-Allow: /api-docs/
-
-Sitemap: https://gumicord.github.io/api-docs/sitemap.xml
+Disallow: /api-docs/
