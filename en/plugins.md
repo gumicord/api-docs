@@ -30,7 +30,7 @@ ui.patch("chat.message.header.author", (node) =>
 
 - [API reference](en/plugins/reference.md) — signatures of functions, `ctx`, interfaces, types, events
 - [Setup and authoring](en/plugins/setup.md) — tooling, first steps, samples
-- [Execution model and lifetime](en/plugins/lifecycle.md) — isolation, P1–P7, budgets, failure counting
+- [Execution model and lifetime](en/plugins/lifecycle.md) — isolation, chaining rules, budgets, failure counting
 - [Manifest, capabilities, approval](en/plugins/manifest.md) — `manifest.json`, capabilities, approval and states, settings
 - [Building, distribution, don'ts](en/plugins/build.md) — workflow, prohibitions
 - [Stable ID catalog](en/theme/ids.md) — IDs with roles (shared with themes)

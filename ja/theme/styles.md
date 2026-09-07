@@ -20,8 +20,8 @@
 | `transition` | ミリ秒 | 追従時間。自体は何も描かない |
 | `decoration` | `none`・`underline`・`strikethrough` の空白区切り | 未知語が1つでもあれば全体を捨てる |
 
-継承するのは `color` と `font` のみ。配置の上書きは M2 で、M1 の
-テーマは見た目だけを変える。
+継承するのは `color` と `font` のみ。配置の上書きは将来の版 (v0.5.0) で、
+現行版のテーマは見た目だけを変える。
 
 ## `transition`
 

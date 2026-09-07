@@ -20,8 +20,8 @@ properties warn and drop (forward compatibility).
 | `transition` | Milliseconds | Time to chase new values. Draws nothing itself |
 | `decoration` | Space-separated `none`, `underline`, `strikethrough` | One unknown word drops the property |
 
-Only `color` and `font` inherit. Layout overrides are M2; M1 themes
-change appearance only.
+Only `color` and `font` inherit. Layout overrides arrive in a later
+release (v0.5.0); current themes change appearance only.
 
 ## `transition`
 

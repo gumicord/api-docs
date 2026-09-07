@@ -64,10 +64,10 @@ So a patch runs exactly once per node.
 Registering against a node that does not exist here (`chrome.*` on
 mobile) is not an error; it simply never runs. To branch beforehand,
 use `exists`.
-Virtualisation means offscreen nodes are never visited (rule V1), so
+Virtualisation means offscreen nodes are never visited, so
 nothing can walk every message. Use Gateway event middleware instead.
 
-`fn` must be pure (rule P7): how many times it runs for one message is
+`fn` must be pure: how many times it runs for one message is
 not defined, since it runs again each time the node leaves the screen
 and comes back, and a side effect would not add up.
 
@@ -312,7 +312,7 @@ type PatchFn<Id extends NodeId = NodeId> = (
 
 A node transform.
 
-It must be pure (rule P7). Virtualisation leaves it undefined how many
+It must be pure. Virtualisation leaves it undefined how many
 times it runs for one message — again each time the node leaves the
 screen and comes back — so a side effect is unpredictable. To react to
 something happening, use Gateway event middleware.

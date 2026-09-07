@@ -7,23 +7,23 @@
   plus warning past it). Memory cap 32MB, stack 512KB.
 - Non-`0` `GUMICORD_SAFE_MODE` starts without loading any plugin.
 
-## Patch chain (P1–P7)
+## Patch chain in seven rules
 
-- P1: bottom-up traversal (children before parents).
-- P2: matching uses the pre-apply stable ID.
-- P3: no recursing into output. Output is final.
-- P4: same-node patches chain in registration order.
-- P5: exceptions revert their node. Nothing else is touched.
-- P6: plugins chain in load order. Each sees the previous output.
-- P7: patches are pure functions. No side effects.
+- Bottom-up traversal (children before parents).
+- Matching uses the pre-apply stable ID.
+- No recursing into output. Output is final.
+- Same-node patches chain in registration order.
+- Exceptions revert their node. Nothing else is touched.
+- Plugins chain in load order. Each sees the previous output.
+- Patches are pure functions. No side effects.
 
-Without P3, wrapping recurses forever. A wrapped child matches the same
-ID again, wraps again, and the stack runs out. Finishing children first
-leaves nothing left to visit after patching self.
+Without the no-recursion rule, wrapping recurses forever. A wrapped child
+matches the same ID again, wraps again, and the stack runs out. Finishing
+children first leaves nothing left to visit after patching self.
 
-P2 matters because matching on output IDs would make the patch set depend
-on run order. Matching on pre-apply IDs fixes the set by tree shape
-alone.
+Matching on pre-apply IDs matters because matching on output IDs would
+make the patch set depend on run order. Matching on pre-apply IDs fixes
+the set by tree shape alone.
 
 Across plugin boundaries the whole subtree passes on, so later plugins
 scan earlier output. Later patches reacting to earlier insertions is

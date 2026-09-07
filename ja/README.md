@@ -26,6 +26,6 @@ ID と役目の一覧は [安定 ID カタログ](ja/theme/ids.md) にある。
 - [プラグイン API](ja/plugins.md) — 概要・最小例・子ページへの案内
   - [API リファレンス](ja/plugins/reference.md) — 関数・`ctx`・インターフェース・型・イベントの署名一覧
   - [環境構築と書き方](ja/plugins/setup.md) — 道具の用意・初回の手順・サンプル
-  - [実行モデルと寿命](ja/plugins/lifecycle.md) — 隔離・P1〜P7・予算・失敗の数え方
+  - [実行モデルと寿命](ja/plugins/lifecycle.md) — 隔離・連鎖規則・予算・失敗の数え方
   - [manifest と能力・承認](ja/plugins/manifest.md) — `manifest.json`・能力・承認と状態・設定画面
   - [ビルドと配布・してはいけないこと](ja/plugins/build.md) — 開発手順・禁止事項

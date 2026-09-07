@@ -12,5 +12,5 @@
 - Identify operations by display strings.
 - Do heavy work, networking, or saving inside patches (killed at 100ms).
 - Hand-edit `plugin.js` or hand-widen `manifest.json`.
-- Bring side effects into same-node patches (P7; virtualization calls
-  unpredictably often).
+- Bring side effects into same-node patches (patches are pure functions;
+  virtualization calls unpredictably often).
