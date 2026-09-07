@@ -284,7 +284,7 @@ interface UserData {
 }
 ```
 
-判別可能な範囲での 1 人の利用者像。
+1 人ぶんの像。名前・表示名・BOT 判別など。
 
 欄: `id`・`username`・`displayName`・`bot`・`avatarUrl?`
 
