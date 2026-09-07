@@ -537,7 +537,6 @@ The IDs a plugin may create.
 
 A core node is tied to a real domain object, so a plugin able to forge
 one would make the accessibility tree lie.
-See spec/03-uitree.md 8.2.
 
 ### `NodeState`
 

@@ -2,9 +2,9 @@
 
 ## ビルドと配布
 
-- 開発言語は TypeScript + `@gumicord/sdk` (`.d.ts` で型検査)。
-- `gumicord-plugin dev` は esbuild 監視＋ホットリロード。
-- `gumicord-plugin build` は esbuild 最小化→`plugin.js` (+任意で qjsc)。
+- 開発言語は TypeScript + `@gumicord/sdk` (型検査付き)。
+- `gumicord-plugin dev` は監視＋ホットリロード。
+- `gumicord-plugin build` は束ねて最小化し `plugin.js` にする (+任意で qjsc)。
 - 1 ディレクトリ 1 プラグインで配る。
 
 ## してはいけないこと

@@ -55,8 +55,7 @@ setJSON(key: string, value: unknown): void
 
 ## Approval and states
 
-First-seen permissions wait for approval. Stored as
-`{"grants": {id: [...]}, "disabled": [id...]}` (`grants.json`).
+First-seen permissions wait for approval. Grants and denials persist.
 Empty means denied, missing key means unconfirmed (different things).
 Disabling stops while keeping the grant; re-enabling does not re-ask.
 Denials and revokes live in settings.

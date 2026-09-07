@@ -7,6 +7,8 @@
 - `data` 列があるノードは `ctx.data` の型 ([プラグイン API リファレンス](ja/plugins/reference.md)) と対応する
 - 使い方は [テーマ API](ja/theme.md)・[ルール](ja/theme/rules.md) を見ること
 
+<!-- BEGIN GENERATED: ids -->
+
 ## `app.*`
 
 | ID | `data` | 役目 |
@@ -23,7 +25,7 @@
 | `app.screen.login.error` | — | ログインフォーム上のエラー表示 |
 | `app.screen.login.card` | — | ログインフォームのカードコンテナ |
 | `app.screen.login.forgot` | — | パスワードを忘れた場合リンク |
-| `app.screen.login.divider` | — | または区切り |
+| `app.screen.login.divider` | — | または 区切り |
 | `app.screen.login.qr_button` | — | QRコードログインボタン |
 | `app.screen.login.register` | — | アカウント作成リンク |
 | `app.screen.main` | — | メイン画面 |
@@ -60,7 +62,7 @@
 | `nav.dm_list.item` | `DmData` | DM 1 件 |
 | `nav.sidebar` | — | 左側全体。一覧と自分をまとめる |
 | `nav.sidebar.lists` | — | サーバ一覧とチャンネル一覧 |
-| `nav.user_panel` | — | 入っている自分。一覧の下に居座る |
+| `nav.user_panel` | — | いま入っている自分。一覧の下に居座る |
 | `nav.user_panel.avatar` | — | 自分のアバター |
 | `nav.user_panel.presence` | — | ステータスの点 (key で online/idle/dnd/invisible を区別) |
 | `nav.user_panel.name` | — | 自分の表示名 |
@@ -103,11 +105,6 @@
 | `chat.input.field` | — | テキスト入力そのもの |
 | `chat.input.toolbar` | — | 入力欄の上部 |
 | `chat.input.actions` | — | 送信・添付などのボタン群 |
-
-## `overlay.*`
-
-| ID | `data` | 役目 |
-|---|---|---|
 | `overlay.layer` | — | 浮かせるものを載せる層。開いている間だけ在る |
 | `overlay.scrim` | — | 後ろを暗くする覆い |
 | `overlay.popover` | — | 基準の点に浮かぶ箱 |
@@ -128,19 +125,9 @@
 | `overlay.modal.action.label` | — | ボタンの文字 (slot で cancel/confirm/danger) |
 | `overlay.tooltip` | — | 指しているものの短い説明。押せず消えるだけ |
 | `overlay.toast` | — | 下に出て数秒で消える知らせ。押すものはない |
-
-## `settings.*`
-
-| ID | `data` | 役目 |
-|---|---|---|
 | `settings.screen` | — | 設定画面 |
 | `settings.nav` | — | 設定の分類の並び |
 | `settings.page` | — | 開いている分類の中身 |
-
-## `primitive.*`
-
-| ID | `data` | 役目 |
-|---|---|---|
 | `primitive.text` | — | 文字列 |
 | `primitive.image` | — | 画像 |
 | `primitive.icon` | — | アイコン |
@@ -155,11 +142,6 @@
 | `primitive.code_block` | — | コードブロック |
 | `primitive.spoiler` | — | スポイラー |
 | `primitive.link` | — | リンク |
-
-## `layout.*`
-
-| ID | `data` | 役目 |
-|---|---|---|
 | `layout.row` | — | 横並び |
 | `layout.column` | — | 縦並び |
 | `layout.stack` | — | 重ね |
@@ -167,3 +149,5 @@
 | `layout.spacer` | — | 空き |
 | `layout.scrollbar` | — | スクロール位置の表示と操作 |
 | `layout.scrollbar.thumb` | — | スクロールバーの摘み |
+
+<!-- END GENERATED: ids -->

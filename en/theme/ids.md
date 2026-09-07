@@ -8,6 +8,8 @@ selectors. Only additions happen; removals and renames never happen.
 - Nodes with a `data` column correspond to `ctx.data` types ([Plugin API reference](en/plugins/reference.md))
 - For usage see [Theme API](en/theme.md) and [Rules](en/theme/rules.md)
 
+<!-- BEGIN GENERATED: ids -->
+
 ## `app.*`
 
 | ID | `data` | Role |
@@ -104,11 +106,6 @@ selectors. Only additions happen; removals and renames never happen.
 | `chat.input.field` | — | Text input itself |
 | `chat.input.toolbar` | — | Upper part of the input area |
 | `chat.input.actions` | — | Button group for send and attachments |
-
-## `overlay.*`
-
-| ID | `data` | Role |
-|---|---|---|
 | `overlay.layer` | — | Layer carrying floating things. Exists only while open |
 | `overlay.scrim` | — | Cover darkening the back |
 | `overlay.popover` | — | Box floating at an anchor point |
@@ -129,19 +126,9 @@ selectors. Only additions happen; removals and renames never happen.
 | `overlay.modal.action.label` | — | Button text (slot holds cancel/confirm/danger) |
 | `overlay.tooltip` | — | Short description of the pointed thing. Vanishes, never presses |
 | `overlay.toast` | — | Notice appearing below and vanishing in seconds. Nothing to press |
-
-## `settings.*`
-
-| ID | `data` | Role |
-|---|---|---|
 | `settings.screen` | — | Settings screen |
 | `settings.nav` | — | Settings category list |
 | `settings.page` | — | Contents of the open category |
-
-## `primitive.*`
-
-| ID | `data` | Role |
-|---|---|---|
 | `primitive.text` | — | String |
 | `primitive.image` | — | Image |
 | `primitive.icon` | — | Icon |
@@ -156,11 +143,6 @@ selectors. Only additions happen; removals and renames never happen.
 | `primitive.code_block` | — | Code block |
 | `primitive.spoiler` | — | Spoiler |
 | `primitive.link` | — | Link |
-
-## `layout.*`
-
-| ID | `data` | Role |
-|---|---|---|
 | `layout.row` | — | Horizontal row |
 | `layout.column` | — | Vertical column |
 | `layout.stack` | — | Stack |
@@ -168,3 +150,5 @@ selectors. Only additions happen; removals and renames never happen.
 | `layout.spacer` | — | Gap |
 | `layout.scrollbar` | — | Scroll position display and control |
 | `layout.scrollbar.thumb` | — | Scrollbar thumb |
+
+<!-- END GENERATED: ids -->

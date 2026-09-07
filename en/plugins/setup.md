@@ -3,7 +3,7 @@
 ## Tooling
 
 - Node.js and TypeScript. The development language is TypeScript plus
-  `@gumicord/sdk` (`.d.ts` checking and completion).
+  `@gumicord/sdk` (type checking and completion).
 - Pick an editor with type completion. Unknown stable IDs do not pass the
   type check, so typos surface while writing.
 
@@ -40,10 +40,9 @@ For the fields see [Manifest, capabilities, approval](en/plugins/manifest.md).
 3. Drop the directory into the plugins folder and start the client.
 4. First-seen permissions ask approval. Until granted, that permission
    counts as absent.
-5. Records land in `grants.json`
-   (`{"grants": {id: [...]}, "disabled": [id...]}`).
+5. Grants and denials persist.
 
-While developing, use `gumicord-plugin dev` (esbuild watch plus hot
+While developing, use `gumicord-plugin dev` (file watch plus hot
 reload).
 
 ## Authoring

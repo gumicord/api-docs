@@ -2,9 +2,9 @@
 
 ## Building and distribution
 
-- Development language is TypeScript + `@gumicord/sdk` (`.d.ts` checked).
-- `gumicord-plugin dev` watches with esbuild plus hot reload.
-- `gumicord-plugin build` minifies to `plugin.js` (plus optional qjsc).
+- Development language is TypeScript + `@gumicord/sdk` (type-checked).
+- `gumicord-plugin dev` watches files plus hot reload.
+- `gumicord-plugin build` bundles and minifies to `plugin.js` (plus optional qjsc).
 - Distribute one directory per plugin.
 
 ## Don't

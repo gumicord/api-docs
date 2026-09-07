@@ -3,7 +3,7 @@
 ## 道具
 
 - Node.js と TypeScript。開発言語は TypeScript + `@gumicord/sdk`
-  (`.d.ts` で型検査・補完が効く)。
+  (型検査・補完が効く)。
 - エディタは型補完の効くものを選ぶ。未知の安定 ID は型で通らないため、
   打ち間違いは書いている時点で分かる。
 
@@ -39,10 +39,9 @@ myplugin/
 2. `npx gumicord-plugin build <dir>` で `plugin.js` を束ねる。
 3. そのディレクトリをプラグインフォルダに入れてクライアントを起動する。
 4. 初見の権限は承認窓が出る。許可するまでその権限は無いものとして動く。
-5. 記録は `grants.json`
-   (`{"grants": {id: [権限...]}, "disabled": [id...]}`) に残る。
+5. 許可・拒否の記録は残る。
 
-開発中は `gumicord-plugin dev` を使う (esbuild 監視＋ホットリロード)。
+開発中は `gumicord-plugin dev` を使う (監視＋ホットリロード)。
 
 ## 書き方
 
