@@ -27,9 +27,6 @@
 </head>
 <body>
   <div class="top-bar">
-    <select id="ver-select" aria-label="Version">
-      <option value="latest">latest</option>
-    </select>
     <select id="lang-select" aria-label="Language">
       <option value="ja">日本語</option>
       <option value="en">English</option>
@@ -120,50 +117,6 @@
       });
       window.addEventListener('hashchange', syncLang);
       syncLang();
-
-      var verSel = document.getElementById('ver-select');
-      var VER_FALLBACK = { stable: 'v0.1.0', versions: ['v0.1.0'] };
-      function currentVer() {
-        var m = location.pathname.match(/\/(v\d+\.\d+\.\d+)(?:\/|$)/);
-        return m ? m[1] : 'latest';
-      }
-      function fillVersions(cfg) {
-        while (verSel.firstChild) verSel.removeChild(verSel.firstChild);
-        var mk = function (value, label) {
-          var o = document.createElement('option');
-          o.value = value;
-          o.textContent = label;
-          return o;
-        };
-        verSel.appendChild(mk('latest', 'latest'));
-        verSel.appendChild(mk('stable', 'stable (' + cfg.stable + ')'));
-        cfg.versions.forEach(function (v) { verSel.appendChild(mk(v, v)); });
-        var cur = currentVer();
-        verSel.value = cur === 'latest' || cfg.versions.indexOf(cur) !== -1 ? cur : 'latest';
-      }
-      function switchVer(v) {
-        var path = location.pathname;
-        if (v === 'latest') {
-          path = path.replace(/\/(v\d+\.\d+\.\d+)(?=\/|$)/, '');
-        } else {
-          if (v === 'stable') v = window.__versStable;
-          if (currentVer() === 'latest') {
-            if (path.charAt(path.length - 1) !== '/') path += '/';
-            path = path + v + '/';
-          } else {
-            path = path.replace(/\/(v\d+\.\d+\.\d+)(?=\/|$)/, '/' + v);
-          }
-        }
-        location.assign(path + location.hash);
-      }
-      verSel.addEventListener('change', function () { switchVer(verSel.value); });
-      fetch('versions.json')
-        .then(function (r) { if (!r.ok) throw new Error('no versions.json'); return r.json(); })
-        .catch(function () { return VER_FALLBACK; })
-        .then(function (cfg) {
-          window.__versStable = cfg.stable;
-          fillVersions(cfg);
-        });
     })();
   </script>
 </body>
