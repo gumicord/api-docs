@@ -125,6 +125,7 @@
 | `overlay.modal.action.label` | — | ボタンの文字 (slot で cancel/confirm/danger) |
 | `overlay.tooltip` | — | 指しているものの短い説明。押せず消えるだけ |
 | `overlay.toast` | — | 下に出て数秒で消える知らせ。押すものはない |
+| `overlay.fps` | — | 右上に重ねて出す FPS 計。設定のサポートで切り替える |
 | `settings.screen` | — | 設定画面 |
 | `settings.nav` | — | 設定の分類の並び |
 | `settings.page` | — | 開いている分類の中身 |

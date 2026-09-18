@@ -428,7 +428,7 @@ interface EmbedData {
 type NodeId =
   | "app.root"
   | "app.window"
-  | /* ... 118 more */
+  | /* ... 119 more */
   | "layout.scrollbar.thumb"
   ;
 ```
@@ -459,7 +459,7 @@ type CreatableNodeId = CoreCreatableNodeId | PluginNodeId;
 type CoreCreatableNodeId =
   | "overlay.layer"
   | "overlay.scrim"
-  | /* ... 41 more */
+  | /* ... 42 more */
   | "layout.scrollbar.thumb"
   ;
 ```

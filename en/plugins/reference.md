@@ -486,7 +486,7 @@ Fields: `type`・`title?`・`description?`・`url?`・`color?`
 type NodeId =
   | "app.root"
   | "app.window"
-  | /* ... 118 more */
+  | /* ... 119 more */
   | "layout.scrollbar.thumb"
   ;
 ```
@@ -528,7 +528,7 @@ ones.
 type CoreCreatableNodeId =
   | "overlay.layer"
   | "overlay.scrim"
-  | /* ... 41 more */
+  | /* ... 42 more */
   | "layout.scrollbar.thumb"
   ;
 ```

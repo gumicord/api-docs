@@ -126,6 +126,7 @@ selectors. Only additions happen; removals and renames never happen.
 | `overlay.modal.action.label` | — | Button text (slot holds cancel/confirm/danger) |
 | `overlay.tooltip` | — | Short description of the pointed thing. Vanishes, never presses |
 | `overlay.toast` | — | Notice appearing below and vanishing in seconds. Nothing to press |
+| `overlay.fps` | — | 右上に重ねて出す FPS 計。設定のサポートで切り替える |
 | `settings.screen` | — | Settings screen |
 | `settings.nav` | — | Settings category list |
 | `settings.page` | — | Contents of the open category |
