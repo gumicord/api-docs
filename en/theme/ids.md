@@ -18,6 +18,7 @@ selectors. Only additions happen; removals and renames never happen.
 | `app.window` | — | One window |
 | `app.screen` | — | Container wrapping the visible screen |
 | `app.screen.loading` | — | Starting up |
+| `app.screen.loading.icon` | — | App icon while starting |
 | `app.screen.login` | — | Login screen |
 | `app.screen.login.title` | — | Login screen heading |
 | `app.screen.login.hint` | — | Login screen description and status line |

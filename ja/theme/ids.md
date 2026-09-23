@@ -17,6 +17,7 @@
 | `app.window` | — | ウィンドウ 1 枚 |
 | `app.screen` | — | 現在表示中の画面を包むコンテナ |
 | `app.screen.loading` | — | 起動中 |
+| `app.screen.loading.icon` | — | 起動中のアプリアイコン |
 | `app.screen.login` | — | ログイン画面 |
 | `app.screen.login.title` | — | ログイン画面の見出し |
 | `app.screen.login.hint` | — | ログイン画面の説明文・状態表示 |

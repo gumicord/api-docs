@@ -486,7 +486,7 @@ Fields: `type`・`title?`・`description?`・`url?`・`color?`
 type NodeId =
   | "app.root"
   | "app.window"
-  | /* ... 119 more */
+  | /* ... 120 more */
   | "layout.scrollbar.thumb"
   ;
 ```
