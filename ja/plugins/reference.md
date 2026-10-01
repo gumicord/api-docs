@@ -428,7 +428,7 @@ interface EmbedData {
 type NodeId =
   | "app.root"
   | "app.window"
-  | /* ... 120 more */
+  | /* ... 121 more */
   | "layout.scrollbar.thumb"
   ;
 ```

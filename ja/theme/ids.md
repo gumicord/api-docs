@@ -105,6 +105,7 @@
 | `chat.input` | — | 入力欄全体 |
 | `chat.input.field` | — | テキスト入力そのもの |
 | `chat.input.toolbar` | — | 入力欄の上部 |
+| `chat.input.body` | — | 入力欄本体の一行。入力欄と横のボタン群を並べる |
 | `chat.input.actions` | — | 送信・添付などのボタン群 |
 | `overlay.layer` | — | 浮かせるものを載せる層。開いている間だけ在る |
 | `overlay.scrim` | — | 後ろを暗くする覆い |

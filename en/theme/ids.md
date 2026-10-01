@@ -106,6 +106,7 @@ selectors. Only additions happen; removals and renames never happen.
 | `chat.input` | — | Whole input area |
 | `chat.input.field` | — | Text input itself |
 | `chat.input.toolbar` | — | Upper part of the input area |
+| `chat.input.body` | — | 入力欄本体の一行。入力欄と横のボタン群を並べる |
 | `chat.input.actions` | — | Button group for send and attachments |
 | `overlay.layer` | — | Layer carrying floating things. Exists only while open |
 | `overlay.scrim` | — | Cover darkening the back |
